@@ -24,9 +24,9 @@ VITE_APP_URL=http://localhost:5000
 VITE_MERCHANT_ID=tu-merchant
 ```
 
-`npm run build` desactiva la demo por defecto. Para una build de presentación, establece `VITE_DEMO_MODE=true` explícitamente. La edición de cantidades y eliminación están disponibles solo en demo hasta que el backend implemente sus endpoints. Los datos de prueba no se insertan en la base de datos.
+`npm run build` desactiva la demo por defecto. Para una build de presentación, establece `VITE_DEMO_MODE=true` explícitamente. La edición de cantidades y eliminación usan PATCH y DELETE del backend y también funcionan en demo. Los datos de prueba no se insertan en la base de datos.
 
-La integración real de checkout conserva las limitaciones existentes del backend: reserva de inventario, persistencia y ciclo del pedido requieren el trabajo señalado en el diagnóstico. Este rediseño no las resuelve.
+El backend incluye correcciones de carrito, reserva transaccional de inventario, actualización del pedido y permisos por propietario. Requieren desplegar los cambios de orders-service (incluidos permisos IAM y UserIndex de CommercialOrders). El ciclo posterior al pago sigue pendiente de completar.
 
 ## Comprobaciones
 
@@ -50,3 +50,11 @@ Fotografías referenciales remotas de Unsplash y Pexels. Requieren conexión a i
 - Jarrón: [Ksenia Chernaya en Pexels](https://www.pexels.com/photo/a-vase-over-white-surface-8987439/).
 - Manta: [Nati en Pexels](https://www.pexels.com/photo/a-close-up-shot-of-folded-knitted-clothes-14642652/).
 - Las restantes URLs de imágenes de Unsplash están identificadas en `src/data/demo.js`.
+
+## Historial y permisos
+
+El comprador consulta `GET /commercial-orders`; la administración consulta `GET /merchants/:merchantId/orders`. Esta última ruta requiere sesión de administrador y una membresía activa con rol `admin` en `MerchantUsers` para el comercio configurado.
+
+El checkout conserva el pedido y la clave de idempotencia al reintentar dentro de la misma pantalla. Recargar o salir de ella inicia otro intento; la recuperación duradera del checkout sigue pendiente.
+
+Los clientes API incluyen creación y edición de catálogo, consulta y ajuste de inventario y detalle de pedidos. El detalle de producto usa GET /products/:productId. Los formularios administrativos de edición de catálogo e inventario aún no forman parte de la interfaz.
