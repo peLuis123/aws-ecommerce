@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { ordersApi } from "../../api/orders.api";
@@ -11,6 +11,9 @@ import { Icon } from "../../components/ui/Icon";
 
 export function CheckoutPage() {
   const { cart } = useCart();
+  const attempt = useRef(null);
+  const pending = useRef(false);
+  const [checkoutStarted, setCheckoutStarted] = useState(false);
   const [provider, setProvider] = useState("stripe");
   const [isSubmitting, setIsSubmitting] = useState(false);
   if (!cart?.items?.length)
@@ -27,10 +30,18 @@ export function CheckoutPage() {
     );
   const total = cart.items.reduce((sum, item) => sum + item.totalAmount, 0);
   const handleCheckout = async () => {
+    if (pending.current) return;
+    pending.current = true;
     setIsSubmitting(true);
-    const idempotencyKey = createIdempotencyKey();
+    attempt.current ||= { idempotencyKey: createIdempotencyKey() };
+    const { idempotencyKey } = attempt.current;
     try {
-      const { data: order } = await ordersApi.create({ cartId: cart.cartId });
+      if (!attempt.current.order) {
+        const { data } = await ordersApi.create({ cartId: cart.cartId });
+        attempt.current.order = data;
+        setCheckoutStarted(true);
+      }
+      const order = attempt.current.order;
       await ordersApi.reserveInventory(order.orderId);
       const response = await ordersApi.checkout(
         order.orderId,
@@ -47,6 +58,7 @@ export function CheckoutPage() {
       toast.error(
         error.response?.data?.error || "No pudimos iniciar el checkout.",
       );
+      pending.current = false;
       setIsSubmitting(false);
     }
   };
@@ -76,6 +88,7 @@ export function CheckoutPage() {
               <input
                 type="radio"
                 name="provider"
+                disabled={isSubmitting || checkoutStarted}
                 checked={provider === "stripe"}
                 onChange={() => setProvider("stripe")}
               />
