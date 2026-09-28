@@ -70,53 +70,47 @@ export function CartPage() {
                     <h3>{item.productName || item.productId}</h3>
                   </Link>
                   <p>{formatMoney(item.unitAmount, cart.currency)} / unidad</p>
-                  {demoMode ? (
-                    <div className="quantity-control">
-                      <button
-                        aria-label={`Reducir ${item.productName}`}
-                        disabled={busy || item.quantity <= 1}
-                        onClick={() =>
-                          change(() =>
-                            updateItem(item.productId, item.quantity - 1),
-                          )
-                        }
-                      >
-                        −
-                      </button>
-                      <input
-                        aria-label={`Cantidad de ${item.productName}`}
-                        readOnly
-                        value={item.quantity}
-                      />
-                      <button
-                        aria-label={`Aumentar ${item.productName}`}
-                        disabled={busy}
-                        onClick={() =>
-                          change(() =>
-                            updateItem(item.productId, item.quantity + 1),
-                          )
-                        }
-                      >
-                        +
-                      </button>
-                    </div>
-                  ) : (
-                    <span>{item.quantity} unidades</span>
-                  )}
+                  <div className="quantity-control">
+                    <button
+                      aria-label={`Reducir ${item.productName}`}
+                      disabled={busy || item.quantity <= 1}
+                      onClick={() =>
+                        change(() =>
+                          updateItem(item.productId, item.quantity - 1),
+                        )
+                      }
+                    >
+                      −
+                    </button>
+                    <input
+                      aria-label={`Cantidad de ${item.productName}`}
+                      readOnly
+                      value={item.quantity}
+                    />
+                    <button
+                      aria-label={`Aumentar ${item.productName}`}
+                      disabled={busy}
+                      onClick={() =>
+                        change(() =>
+                          updateItem(item.productId, item.quantity + 1),
+                        )
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
                 <div className="cart-item-actions">
                   <strong>
                     {formatMoney(item.totalAmount, cart.currency)}
                   </strong>
-                  {demoMode && (
-                    <button
-                      className="remove-button"
-                      disabled={busy}
-                      onClick={() => change(() => removeItem(item.productId))}
-                    >
-                      Eliminar
-                    </button>
-                  )}
+                  <button
+                    className="remove-button"
+                    disabled={busy}
+                    onClick={() => change(() => removeItem(item.productId))}
+                  >
+                    Eliminar
+                  </button>
                 </div>
               </article>
             ))}
