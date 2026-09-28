@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { config } from "../../config/env";
 import { ordersApi } from "../../api/orders.api";
 import { formatMoney } from "../../utils/money";
 
@@ -8,7 +9,7 @@ export function AdminOrdersPage() {
 
   useEffect(() => {
     ordersApi
-      .list()
+      .listMerchant(config.merchantId)
       .then((response) => {
         setOrders(response.data);
         setState("success");

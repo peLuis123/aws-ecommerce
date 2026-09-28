@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { config } from "../../config/env";
 import { ordersApi } from "../../api/orders.api";
 import { formatMoney } from "../../utils/money";
 import { Icon } from "../ui/Icon";
@@ -9,8 +10,7 @@ export function RecentOrders({ admin = false }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => {
     let active = true;
-    ordersApi
-      .list()
+    (admin ? ordersApi.listMerchant(config.merchantId) : ordersApi.list())
       .then(({ data }) => {
         if (active) setOrders(data.slice(0, 3));
       })
@@ -20,7 +20,7 @@ export function RecentOrders({ admin = false }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [admin]);
   return (
     <section className="recent-orders">
       <div className="section-heading">
