@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 *.md
 .env
+# Generated local code analysis
+/.codegraph/
+/graphify-out/
