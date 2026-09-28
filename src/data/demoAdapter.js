@@ -30,8 +30,12 @@ export async function demoAdapter(request) {
       ? JSON.parse(request.data)
       : request.data || {};
   let data;
-  if (url === "/products") data = demoProducts;
-  else if (url === "/categories") data = demoCategories;
+  if (/^\/products\/[^/]+$/.test(url) && method === "get")
+    data =
+      demoProducts.find((product) => product.productId === url.split("/")[2]) ||
+      fail("Producto no encontrado.", 404);
+  else if (url === "/products" && method === "get") data = demoProducts;
+  else if (url === "/categories" && method === "get") data = demoCategories;
   else if (url === "/auth/me")
     data =
       state.user ||
@@ -99,8 +103,16 @@ export async function demoAdapter(request) {
   } else if (url.startsWith("/carts/"))
     data =
       state.carts[url.split("/")[2]] || fail("Carrito no encontrado.", 404);
-  else if (url === "/commercial-orders" && method === "get")
+  else if (
+    (url === "/commercial-orders" ||
+      /^\/merchants\/[^/]+\/orders$/.test(url)) &&
+    method === "get"
+  )
     data = state.orders;
+  else if (/^\/commercial-orders\/[^/]+$/.test(url) && method === "get")
+    data =
+      state.orders.find((order) => order.orderId === url.split("/")[2]) ||
+      fail("Pedido no encontrado.", 404);
   else if (url === "/commercial-orders" && method === "post") {
     const cart = state.carts[body.cartId];
     if (!cart?.items.length) fail("Tu carrito está vacío.");

@@ -11,16 +11,17 @@ import { ProductCard } from "../../components/product/ProductCard";
 export function ProductDetailPage() {
   const { productId } = useParams();
   const { addItem } = useCart();
+  const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState("loading");
   useEffect(() => {
     let active = true;
-    productsApi
-      .list()
-      .then(({ data }) => {
+    Promise.all([productsApi.get(productId), productsApi.list()])
+      .then(([detail, { data }]) => {
         if (active) {
+          setProduct(detail.data);
           setProducts(data);
           setStatus("success");
         }
@@ -31,8 +32,7 @@ export function ProductDetailPage() {
     return () => {
       active = false;
     };
-  }, []);
-  const product = products.find((item) => item.productId === productId);
+  }, [productId]);
   if (status === "loading")
     return (
       <main className="product-detail">
