@@ -1,4 +1,3 @@
-import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { categoriesApi } from "../../api/categories.api";
@@ -8,7 +7,6 @@ import { formatMoney } from "../../utils/money";
 import { RecentOrders } from "../../components/account/RecentOrders";
 
 export function AdminDashboardPage() {
-  const { merchantId } = useOutletContext();
   const [summary, setSummary] = useState({
     status: "loading",
     products: 0,
@@ -18,9 +16,9 @@ export function AdminDashboardPage() {
 
   useEffect(() => {
     Promise.all([
-      productsApi.list({ merchantId, includeInactive: true }),
-      categoriesApi.list({ merchantId, includeInactive: true }),
-      merchantsApi.balance(merchantId),
+      productsApi.list({ includeInactive: true }),
+      categoriesApi.list({ includeInactive: true }),
+      merchantsApi.balance(),
     ])
       .then(([products, categories, balance]) =>
         setSummary({
@@ -31,7 +29,7 @@ export function AdminDashboardPage() {
         }),
       )
       .catch(() => setSummary((current) => ({ ...current, status: "error" })));
-  }, [merchantId]);
+  }, []);
 
   if (summary.status === "loading")
     return (
@@ -72,7 +70,7 @@ export function AdminDashboardPage() {
           </strong>
         </Link>
       </div>
-      <RecentOrders admin merchantId={merchantId} />
+      <RecentOrders admin />
     </div>
   );
 }

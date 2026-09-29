@@ -1,4 +1,3 @@
-import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { productsApi } from "../../api/products.api";
 import { MissingRouteWarning } from "../../components/ui/MissingRouteWarning";
@@ -6,19 +5,18 @@ import { formatMoney } from "../../utils/money";
 import { placeholderImage } from "../../utils/placeholderImage";
 
 export function AdminProductsPage() {
-  const { merchantId } = useOutletContext();
   const [products, setProducts] = useState([]);
   const [state, setState] = useState("loading");
 
   useEffect(() => {
     productsApi
-      .list({ merchantId, includeInactive: true })
+      .list({ includeInactive: true })
       .then((response) => {
         setProducts(response.data);
         setState("success");
       })
       .catch(() => setState("error"));
-  }, [merchantId]);
+  }, []);
 
   if (state === "loading")
     return (

@@ -1,22 +1,20 @@
-import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ordersApi } from "../../api/orders.api";
 import { formatMoney } from "../../utils/money";
 
 export function AdminOrdersPage() {
-  const { merchantId } = useOutletContext();
   const [orders, setOrders] = useState([]);
   const [state, setState] = useState("loading");
 
   useEffect(() => {
     ordersApi
-      .listMerchant(merchantId)
+      .listAdmin()
       .then((response) => {
         setOrders(response.data);
         setState("success");
       })
       .catch(() => setState("error"));
-  }, [merchantId]);
+  }, []);
 
   if (state === "loading")
     return (

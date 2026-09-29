@@ -4,12 +4,12 @@ import { ordersApi } from "../../api/orders.api";
 import { formatMoney } from "../../utils/money";
 import { Icon } from "../ui/Icon";
 
-export function RecentOrders({ admin = false, merchantId }) {
+export function RecentOrders({ admin = false }) {
   const [orders, setOrders] = useState(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
     let active = true;
-    (admin ? ordersApi.listMerchant(merchantId) : ordersApi.list())
+    (admin ? ordersApi.listAdmin() : ordersApi.list())
       .then(({ data }) => {
         if (active) setOrders(data.slice(0, 3));
       })
@@ -19,7 +19,7 @@ export function RecentOrders({ admin = false, merchantId }) {
     return () => {
       active = false;
     };
-  }, [admin, merchantId]);
+  }, [admin]);
   return (
     <section className="recent-orders">
       <div className="section-heading">

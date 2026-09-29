@@ -1,6 +1,7 @@
 import { axiosClient } from "./axiosClient";
 
 export const ordersApi = {
+  listAdmin: () => axiosClient.get("/admin/orders"),
   get: (id) => axiosClient.get(`/commercial-orders/${id}`),
   listMerchant: (merchantId) =>
     axiosClient.get(`/merchants/${merchantId}/orders`),
