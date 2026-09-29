@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "portafolio-91b9c"
+  },
+  "targets": {
+    "portafolio-91b9c": {
+      "hosting": {
+        "ecommerce": [
+          "casa-nativa"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
