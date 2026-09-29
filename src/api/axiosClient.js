@@ -19,16 +19,6 @@ export const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((request) => {
-  const isAuthRequest = request.url?.startsWith("/auth/");
-
-  if (!isAuthRequest && config.merchantId) {
-    request.headers["X-Merchant-Id"] = config.merchantId;
-  }
-
-  if (!isAuthRequest && config.merchantApiKey) {
-    request.headers["X-Api-Key"] = config.merchantApiKey;
-  }
-
   debug("request", request.method?.toUpperCase(), request.url);
   return request;
 });

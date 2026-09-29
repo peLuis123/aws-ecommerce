@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { cartApi } from "../api/cart.api";
-import { config } from "../config/env";
 import { CartContext } from "./cart.context";
 import { demoMode } from "../data/demo";
 
@@ -33,7 +32,7 @@ export function CartProvider({ children }) {
 
     if (pendingCart.current) return pendingCart.current;
     pendingCart.current = cartApi
-      .create({ merchantId: config.merchantId, currency: "USD" })
+      .create({ currency: "USD" })
       .then((response) => {
         const nextCartId = response.data.cartId;
         window.localStorage.setItem(cartStorageKey, nextCartId);
