@@ -36,6 +36,17 @@ export async function demoAdapter(request) {
       fail("Producto no encontrado.", 404);
   else if (url === "/products" && method === "get") data = demoProducts;
   else if (url === "/categories" && method === "get") data = demoCategories;
+  else if (url === "/me/merchants" && method === "get")
+    data =
+      state.user?.role === "admin"
+        ? [
+            {
+              merchantId: "merchant-123",
+              name: "Casa Nativa",
+              defaultCurrency: "USD",
+            },
+          ]
+        : fail("Acceso de administrador requerido.", 403);
   else if (url === "/auth/me")
     data =
       state.user ||
