@@ -31,3 +31,6 @@ dist-ssr
 # Firebase local cache
 .firebase/
 firebase-debug.log*
+
+# Private Firebase environment configuration
+.env.*.local

@@ -91,3 +91,8 @@ Si el sitio ya existe y es el destino correcto, omite hosting:sites:create. El d
 Antes de usar login en producción, configura FRONTEND_ORIGIN en orders-service con el origen exacto del sitio (por ejemplo https://casa-nativa.web.app), corrige las cookies HTTPS a SameSite=None; Secure y despliega el backend. Estas correcciones de sesión siguen pendientes: publicar en Hosting no las resuelve. Las cookies entre dominios también dependen de las restricciones del navegador; para una solución estable habrá que planificar dominios del mismo sitio o un intermediario adecuado. El proxy de Vite propuesto para desarrollo tampoco está implementado en este paso.
 
 La configuración web de Firebase no concede permisos para desplegar: firebase login usa tu cuenta autorizada. Las reglas de Storage y la autorización de subidas requieren un diseño específico porque la sesión actual está en AWS; no se habilitan escrituras públicas.
+
+
+### Variables de Firebase
+
+La configuración web de Firebase se lee desde VITE_FIREBASE_* en src/config/firebase.js. Copia las variables de .env.firebase.example a .env.local y completa sus valores antes de ejecutar desarrollo o firebase deploy. .env.local está ignorado por Git; en CI configura las mismas variables en el entorno de compilación. Vite incluye estos valores en el JavaScript público: no uses credenciales de servidor ni cuentas de servicio en variables VITE_*.

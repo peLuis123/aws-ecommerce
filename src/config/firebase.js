@@ -3,14 +3,14 @@ import { getStorage } from "firebase/storage";
 
 // Public web configuration. Authentication for the store remains in the AWS API.
 const firebaseConfig = {
-  apiKey: "AIzaSyDM1WadRswoPOi5-CwiboJUcaIfx-F9zjE",
-  authDomain: "portafolio-91b9c.firebaseapp.com",
-  databaseURL: "https://portafolio-91b9c-default-rtdb.firebaseio.com",
-  projectId: "portafolio-91b9c",
-  storageBucket: "portafolio-91b9c.appspot.com",
-  messagingSenderId: "220550201921",
-  appId: "1:220550201921:web:a1b9f3c9c17664a902fcc0",
-  measurementId: "G-6CKGWS2W7R",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 export const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
 export const storage = getStorage(firebaseApp);
