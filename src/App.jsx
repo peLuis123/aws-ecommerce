@@ -25,7 +25,10 @@ import { CheckoutCancelPage } from "./pages/Checkout/CheckoutCancelPage";
 import { CheckoutPage } from "./pages/Checkout/CheckoutPage";
 import { CheckoutSuccessPage } from "./pages/Checkout/CheckoutSuccessPage";
 import { ProductDetailPage } from "./pages/ProductDetail/ProductDetailPage";
+import { AdminCategoriesPage } from "./pages/Admin/AdminCategoriesPage";
+import { AdminOrderDetailPage } from "./pages/Admin/AdminOrderDetailPage";
 import "./App.css";
+import "./admin.css";
 
 function PlaceholderPage({ title, description }) {
   return (
@@ -77,6 +80,14 @@ function App() {
                 <Route element={<AdminRoute />}>
                   <Route element={<AdminDashboardLayout />}>
                     <Route path="/admin" element={<AdminDashboardPage />} />
+                    <Route
+                      path="/admin/categorias"
+                      element={<AdminCategoriesPage />}
+                    />
+                    <Route
+                      path="/admin/ordenes/:orderId"
+                      element={<AdminOrderDetailPage />}
+                    />
                     <Route
                       path="/admin/productos"
                       element={<AdminProductsPage />}

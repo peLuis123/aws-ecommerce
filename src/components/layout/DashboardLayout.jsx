@@ -21,6 +21,7 @@ export function AdminDashboardLayout() {
       links={[
         ["/admin", "Resumen"],
         ["/admin/productos", "Productos"],
+        ["/admin/categorias", "Categorías"],
         ["/admin/ordenes", "Órdenes"],
         ["/admin/balance", "Balance"],
       ]}

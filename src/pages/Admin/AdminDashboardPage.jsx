@@ -59,7 +59,7 @@ export function AdminDashboardPage() {
           <span>Productos en la colección</span>
           <strong>{summary.products}</strong>
         </Link>
-        <Link to="/admin/productos">
+        <Link to="/admin/categorias">
           <span>Categorías</span>
           <strong>{summary.categories}</strong>
         </Link>
