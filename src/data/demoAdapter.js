@@ -34,7 +34,19 @@ export async function demoAdapter(request) {
     data =
       demoProducts.find((product) => product.productId === url.split("/")[2]) ||
       fail("Producto no encontrado.", 404);
-  else if (url === "/products" && method === "get") data = demoProducts;
+  else if (url === "/products" && method === "get") {
+    const params = request.params || {};
+    if (params.page !== undefined || params.pageSize !== undefined) {
+      const category = demoCategories.find(c => c.categoryId === params.category || c.slug === params.category)?.categoryId || params.category;
+      const q = (params.q || "").trim().toLocaleLowerCase("es");
+      const items = demoProducts.filter(p => (!category || p.categoryId === category) && `${p.name} ${p.description || ""}`.toLocaleLowerCase("es").includes(q));
+      items.sort((a,b) => (params.sort === "low" ? a.price-b.price : params.sort === "high" ? b.price-a.price : params.sort === "name" ? a.name.localeCompare(b.name,"es") : 0) || a.productId.localeCompare(b.productId));
+      const pageSize = Number(params.pageSize) || 12;
+      const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
+      const page = Math.min(Math.max(1, Number(params.page) || 1), totalPages);
+      data = { items: items.slice((page-1)*pageSize,page*pageSize), page, pageSize, total: items.length, totalPages };
+    } else data = demoProducts;
+  }
   else if (url === "/categories" && method === "get") data = demoCategories;
   else if (url === "/auth/me")
     data =

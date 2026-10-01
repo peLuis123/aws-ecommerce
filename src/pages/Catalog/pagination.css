@@ -1,0 +1,4 @@
+.catalog-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 32px 0; }
+.catalog-pagination > div { display: flex; align-items: center; gap: 16px; }
+.catalog-pagination button:disabled { opacity: .4; cursor: not-allowed; }
+@media (max-width: 600px) { .catalog-pagination { justify-content: center; } .catalog-pagination > div { gap: 10px; } .catalog-pagination .button { padding: 12px; } }
