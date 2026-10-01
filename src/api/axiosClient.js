@@ -23,6 +23,8 @@ axiosClient.interceptors.request.use((request) => {
   return request;
 });
 
+let refreshPromise;
+
 axiosClient.interceptors.response.use(
   (response) => {
     debug("response", response.status, response.config.url);
@@ -36,12 +38,13 @@ axiosClient.interceptors.response.use(
       error.response?.status === 401 &&
       originalRequest &&
       !originalRequest._retry &&
-      !originalRequest.url?.startsWith("/auth/")
+      !["/auth/login", "/auth/register", "/auth/refresh", "/auth/logout"].includes(originalRequest.url)
     ) {
       originalRequest._retry = true;
 
       try {
-        await axiosClient.post("/auth/refresh");
+        refreshPromise ??= axiosClient.post("/auth/refresh").finally(() => { refreshPromise = undefined; });
+        await refreshPromise;
         return axiosClient(originalRequest);
       } catch (refreshError) {
         debug("session expired", refreshError.response?.status);
