@@ -1,0 +1,16 @@
+// Merge this match block into the existing bucket rules; preserve other apps' rules.
+// Requested temporary policy: unauthenticated image creation and public reads.
+// Client-side checks alone do not restrict direct requests to Storage.
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /products/{fileName} {
+      allow get: if true;
+      allow create: if request.resource.size > 0
+        && request.resource.size <= 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp)')
+        && fileName.matches('[a-f0-9-]+[.](jpg|png|webp)');
+      allow update, delete, list: if false;
+    }
+  }
+}
