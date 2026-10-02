@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { categoriesApi } from "../../api/categories.api";
 import { AdminFeedback } from "../../components/admin/AdminFeedback";
+import { AdminModal } from "../../components/admin/AdminModal";
 import { adminError, statusLabel } from "../../utils/admin";
 export function AdminCategoriesPage() {
   const [items, setItems] = useState([]),
@@ -90,10 +91,11 @@ export function AdminCategoriesPage() {
           Nueva categoría
         </button>
       </div>
-      <AdminFeedback error={error} message={message} />
+      <AdminFeedback error={form ? "" : error} message={message} />
       {form && (
+        <AdminModal title={form.categoryId ? "Editar categoría" : "Nueva categoría"} busy={busy} onClose={() => setForm(null)}>
         <form className="admin-panel admin-form" onSubmit={save}>
-          <h2>{form.categoryId ? "Editar categoría" : "Nueva categoría"}</h2>
+          <AdminFeedback error={error} />
           <fieldset disabled={busy}>
             <div className="admin-form-grid">
               <label>
@@ -151,6 +153,7 @@ export function AdminCategoriesPage() {
             </button>
           </div>
         </form>
+        </AdminModal>
       )}
       <button
         className="button button-outline"

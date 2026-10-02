@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { productsApi } from "../../api/products.api";
 import { categoriesApi } from "../../api/categories.api";
@@ -6,6 +6,8 @@ import { formatMoney } from "../../utils/money";
 import { adminError, minorUnits, statusLabel } from "../../utils/admin";
 import { uploadProductImage } from "../../services/productImages";
 import { AdminFeedback } from "../../components/admin/AdminFeedback";
+import { AdminModal } from "../../components/admin/AdminModal";
+import { ProductAction } from "../../components/admin/ProductAction";
 import { placeholderImage } from "../../utils/placeholderImage";
 const empty = {
   name: "",
@@ -27,6 +29,9 @@ export function AdminProductsPage() {
     [message, setMessage] = useState(""),
     [search, setSearch] = useState(""),
     [filter, setFilter] = useState("all"),
+    [page, setPage] = useState(1),
+    [category, setCategory] = useState("all"),
+    [stockFilter, setStockFilter] = useState("all"),
     [editor, setEditor] = useState(null),
     [inventory, setInventory] = useState(null),
     [busy, setBusy] = useState(false);
@@ -91,7 +96,16 @@ export function AdminProductsPage() {
   const visible = products.filter(
     (p) =>
       (filter === "all" || p.status === filter) &&
+      (category === "all" || p.categoryId === category) &&
+      (stockFilter === "all" ||
+        (stockFilter === "empty"
+          ? Number(p.stock ?? 0) === 0
+          : Number(p.stock) > 0 && Number(p.stock) <= 5)) &&
       `${p.name} ${p.sku || ""}`.toLowerCase().includes(search.toLowerCase()),
+  );
+  const currentPage = Math.min(
+    page,
+    Math.max(1, Math.ceil(visible.length / 10)),
   );
   return (
     <div className="dashboard-page admin-workspace">
@@ -154,15 +168,55 @@ export function AdminProductsPage() {
             type="search"
             placeholder="Nombre o SKU"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
           />
         </label>
         <label>
           Estado
-          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <select
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value);
+              setPage(1);
+            }}
+          >
             <option value="all">Todos</option>
             <option value="active">Activos</option>
             <option value="inactive">Inactivos</option>
+          </select>
+        </label>
+        <label>
+          Categoría
+          <select
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="all">Todas</option>
+            {categories.map((c) => (
+              <option key={c.categoryId} value={c.categoryId}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Existencias
+          <select
+            value={stockFilter}
+            onChange={(e) => {
+              setStockFilter(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="all">Todas</option>
+            <option value="empty">Agotados</option>
+            <option value="low">Pocas unidades (1–5)</option>
           </select>
         </label>
         <button
@@ -179,66 +233,102 @@ export function AdminProductsPage() {
       ) : (
         <>
           <p className="admin-muted">{visible.length} productos</p>
-          <div className="admin-cards">
-            {visible.map((p) => (
-              <article className="admin-item" key={p.productId}>
-                <img
-                  src={p.imageUrl || placeholderImage(p.productId, 120, 120)}
-                  alt=""
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = placeholderImage(
-                      p.productId,
-                      120,
-                      120,
-                    );
-                  }}
-                />
-                <div className="admin-item-content">
-                  <span
-                    className={`admin-badge ${p.status === "inactive" ? "is-inactive" : ""}`}
-                  >
-                    {statusLabel(p.status)}
-                  </span>
-                  <h2>{p.name}</h2>
-                  <p>
-                    {formatMoney(p.price, p.currency)} · {p.stock ?? 0}{" "}
-                    disponibles
-                  </p>
-                  <small>
-                    {categories.find((c) => c.categoryId === p.categoryId)
-                      ?.name || "Sin categoría"}
-                    {p.sku ? ` · ${p.sku}` : ""}
-                  </small>
-                  <div className="admin-actions">
-                    <button
-                      disabled={busy || !!editor || !!inventory}
-                      onClick={() =>
-                        setEditor({
-                          ...empty,
-                          ...p,
-                          price: (p.price / 100).toFixed(2),
-                        })
-                      }
+          <div className="catalog-list">
+            {visible
+              .slice((currentPage - 1) * 10, currentPage * 10)
+              .map((p) => (
+                <article className="admin-item" key={p.productId}>
+                  <img
+                    src={p.imageUrl || placeholderImage(p.productId, 120, 120)}
+                    alt=""
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = placeholderImage(
+                        p.productId,
+                        120,
+                        120,
+                      );
+                    }}
+                  />
+                  <div className="admin-item-content">
+                    <span
+                      className={`admin-badge ${p.status === "inactive" ? "is-inactive" : ""}`}
                     >
-                      Editar
-                    </button>
-                    <button
-                      disabled={busy || !!editor || !!inventory}
-                      onClick={() => openInventory(p)}
+                      {statusLabel(p.status)}
+                    </span>
+                    <h2>{p.name}</h2>
+                    <p>
+                      {formatMoney(p.price, p.currency)} · {p.stock ?? 0}{" "}
+                      disponibles
+                    </p>
+                    <small>
+                      {categories.find((c) => c.categoryId === p.categoryId)
+                        ?.name || "Sin categoría"}
+                      {p.sku ? ` · ${p.sku}` : ""}
+                    </small>
+                    <div
+                      className="catalog-product-actions tw:flex tw:flex-wrap tw:items-center tw:gap-2"
+                      role="group"
+                      aria-label={`Acciones de ${p.name}`}
                     >
-                      Inventario
-                    </button>
-                    {p.status === "active" && (
-                      <Link to={`/productos/${p.productId}`}>
-                        Ver en tienda
-                      </Link>
-                    )}
+                      <ProductAction
+                        icon="edit"
+                        label={`Editar ${p.name}`}
+                        disabled={busy || !!editor || !!inventory}
+                        onClick={() =>
+                          setEditor({
+                            ...empty,
+                            ...p,
+                            price: (p.price / 100).toFixed(2),
+                          })
+                        }
+                      />
+                      <ProductAction
+                        icon="inventory"
+                        label={`Inventario de ${p.name}`}
+                        disabled={busy || !!editor || !!inventory}
+                        onClick={() => openInventory(p)}
+                      />
+                      {p.status === "active" && (
+                        <ProductAction
+                          icon="view"
+                          label={`Ver ${p.name} en tienda`}
+                          to={`/productos/${p.productId}`}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              ))}
           </div>
+          {visible.length > 10 && (
+            <nav
+              className="catalog-pagination"
+              aria-label="Paginación de productos"
+            >
+              <span>
+                {(currentPage - 1) * 10 + 1}–
+                {Math.min(currentPage * 10, visible.length)} de {visible.length}
+              </span>
+              <div>
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setPage(currentPage - 1)}
+                >
+                  Anterior
+                </button>
+                <span>
+                  Página {currentPage} de {Math.ceil(visible.length / 10)}
+                </span>
+                <button
+                  disabled={currentPage * 10 >= visible.length}
+                  onClick={() => setPage(currentPage + 1)}
+                >
+                  Siguiente
+                </button>
+              </div>
+            </nav>
+          )}
           {!visible.length && (
             <p className="admin-empty">
               No hay productos que coincidan. Crea uno o cambia los filtros.
@@ -250,6 +340,22 @@ export function AdminProductsPage() {
   );
 }
 function ProductEditor({ product, categories, onCancel, onSaved }) {
+  const dialogRef = useRef(null);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const trigger = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      // The opener is re-enabled after the editor unmounts.
+      requestAnimationFrame(() => {
+        if (trigger?.isConnected) trigger.focus();
+      });
+    };
+  }, []);
   const [form, setForm] = useState(product),
     [busy, setBusy] = useState(false),
     [uploading, setUploading] = useState(false),
@@ -313,165 +419,195 @@ function ProductEditor({ product, categories, onCancel, onSaved }) {
     }
   }
   return (
-    <form className="admin-panel admin-form" onSubmit={save}>
-      <h2>{product.productId ? "Editar producto" : "Nuevo producto"}</h2>
-      <AdminFeedback error={error} />
-      <fieldset disabled={busy || uploading}>
-        <div className="admin-form-grid">
-          <label>
-            Nombre
-            <input
-              name="name"
-              value={form.name}
-              onChange={change}
-              required
-              maxLength={200}
-            />
-          </label>
-          <label>
-            SKU
-            <input
-              name="sku"
-              value={form.sku}
-              onChange={change}
-              maxLength={200}
-            />
-          </label>
-          <label>
-            Precio
-            <input
-              name="price"
-              type="number"
-              step="0.01"
-              min="0.01"
-              value={form.price}
-              onChange={change}
-              required
-            />
-          </label>
-          <label>
-            Moneda
-            <select name="currency" value={form.currency} onChange={change}>
-              {[...new Set(["USD", "PEN", "EUR", form.currency])].map((c) => (
-                <option key={c}>{c}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Categoría
-            <select name="categoryId" value={form.categoryId} onChange={change}>
-              <option value="" disabled={!!product.categoryId}>
-                Sin categoría
-              </option>
-              {categories
-                .filter(
-                  (c) =>
-                    c.status === "active" ||
-                    c.categoryId === product.categoryId,
-                )
-                .map((c) => (
-                  <option
-                    key={c.categoryId}
-                    value={c.categoryId}
-                    disabled={c.status !== "active"}
-                  >
-                    {c.name}
-                    {c.status !== "active" ? " (inactiva)" : ""}
-                  </option>
-                ))}
-            </select>
-          </label>
-          <label>
-            Estado
-            <select name="status" value={form.status} onChange={change}>
-              <option value="active">Activo · visible en tienda</option>
-              <option value="inactive">Inactivo · oculto en tienda</option>
-            </select>
-          </label>
-          {!product.productId && (
+    <dialog
+      ref={dialogRef}
+      className="admin-product-dialog admin-workspace"
+      aria-labelledby="product-editor-title"
+      onCancel={(event) => {
+        event.preventDefault();
+        if (!busy && !uploading) onCancel();
+      }}
+    >
+      <form className="admin-panel admin-form" onSubmit={save}>
+        <div className="admin-dialog-heading">
+          <div>
+            <p className="eyebrow">Tu catálogo</p>
+            <h2 id="product-editor-title">
+              {product.productId ? "Editar producto" : "Nuevo producto"}
+            </h2>
+          </div>
+          <button
+            type="button"
+            className="admin-dialog-close"
+            aria-label="Cerrar formulario de producto"
+            disabled={busy || uploading}
+            onClick={onCancel}
+          >
+            ×
+          </button>
+        </div>
+        <AdminFeedback error={error} />
+        <fieldset disabled={busy || uploading}>
+          <div className="admin-form-grid">
             <label>
-              Existencias iniciales
+              Nombre
               <input
-                name="stock"
+                name="name"
+                value={form.name}
+                onChange={change}
+                required
+                maxLength={200}
+              />
+            </label>
+            <label>
+              SKU
+              <input
+                name="sku"
+                value={form.sku}
+                onChange={change}
+                maxLength={200}
+              />
+            </label>
+            <label>
+              Precio
+              <input
+                name="price"
                 type="number"
-                min="0"
-                step="1"
-                value={form.stock}
+                step="0.01"
+                min="0.01"
+                value={form.price}
                 onChange={change}
                 required
               />
             </label>
-          )}
-          <label>
-            Slug (opcional)
-            <input
-              name="slug"
-              value={form.slug}
-              onChange={change}
-              maxLength={200}
-            />
-          </label>
-          <label className="admin-wide">
-            Descripción
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={change}
-              maxLength={10000}
-              rows={4}
-            />
-          </label>
-          <label className="admin-wide">
-            Imagen del producto
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              onChange={upload}
-            />
-            <small>
-              JPG, PNG o WebP, hasta 5 MB. La imagen se sube al seleccionarla;
-              guarda el producto para asociarla.
-            </small>
-          </label>
-          <label className="admin-wide">
-            URL de la imagen
-            <input
-              name="imageUrl"
-              type="url"
-              value={form.imageUrl}
-              onChange={change}
-              placeholder="https://…"
-              required={!!product.imageUrl}
-            />
-          </label>
+            <label>
+              Moneda
+              <select name="currency" value={form.currency} onChange={change}>
+                {[...new Set(["USD", "PEN", "EUR", form.currency])].map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Categoría
+              <select
+                name="categoryId"
+                value={form.categoryId}
+                onChange={change}
+              >
+                <option value="" disabled={!!product.categoryId}>
+                  Sin categoría
+                </option>
+                {categories
+                  .filter(
+                    (c) =>
+                      c.status === "active" ||
+                      c.categoryId === product.categoryId,
+                  )
+                  .map((c) => (
+                    <option
+                      key={c.categoryId}
+                      value={c.categoryId}
+                      disabled={c.status !== "active"}
+                    >
+                      {c.name}
+                      {c.status !== "active" ? " (inactiva)" : ""}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <label>
+              Estado
+              <select name="status" value={form.status} onChange={change}>
+                <option value="active">Activo · visible en tienda</option>
+                <option value="inactive">Inactivo · oculto en tienda</option>
+              </select>
+            </label>
+            {!product.productId && (
+              <label>
+                Existencias iniciales
+                <input
+                  name="stock"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={form.stock}
+                  onChange={change}
+                  required
+                />
+              </label>
+            )}
+            <label>
+              Slug (opcional)
+              <input
+                name="slug"
+                value={form.slug}
+                onChange={change}
+                maxLength={200}
+              />
+            </label>
+            <label className="admin-wide">
+              Descripción
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={change}
+                maxLength={10000}
+                rows={4}
+              />
+            </label>
+            <label className="admin-wide">
+              Imagen del producto
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={upload}
+              />
+              <small>
+                JPG, PNG o WebP, hasta 5 MB. La imagen se sube al seleccionarla;
+                guarda el producto para asociarla.
+              </small>
+            </label>
+            <label className="admin-wide">
+              URL de la imagen
+              <input
+                name="imageUrl"
+                type="url"
+                value={form.imageUrl}
+                onChange={change}
+                placeholder="https://…"
+                required={!!product.imageUrl}
+              />
+            </label>
+          </div>
+        </fieldset>
+        {uploading && (
+          <p role="status">
+            Subiendo imagen… {progress}% <progress max="100" value={progress} />
+          </p>
+        )}
+        {form.imageUrl && (
+          <img
+            className="admin-preview"
+            src={form.imageUrl}
+            alt="Vista previa del producto"
+          />
+        )}
+        <div className="admin-actions admin-dialog-actions">
+          <button className="button button-dark" disabled={busy || uploading}>
+            {busy ? "Guardando…" : "Guardar producto"}
+          </button>
+          <button
+            type="button"
+            className="button button-outline"
+            disabled={busy || uploading}
+            onClick={onCancel}
+          >
+            Cancelar
+          </button>
         </div>
-      </fieldset>
-      {uploading && (
-        <p role="status">
-          Subiendo imagen… {progress}% <progress max="100" value={progress} />
-        </p>
-      )}
-      {form.imageUrl && (
-        <img
-          className="admin-preview"
-          src={form.imageUrl}
-          alt="Vista previa del producto"
-        />
-      )}
-      <div className="admin-actions">
-        <button className="button button-dark" disabled={busy || uploading}>
-          {busy ? "Guardando…" : "Guardar producto"}
-        </button>
-        <button
-          type="button"
-          className="button button-outline"
-          disabled={busy || uploading}
-          onClick={onCancel}
-        >
-          Cancelar
-        </button>
-      </div>
-    </form>
+      </form>
+    </dialog>
   );
 }
 function InventoryEditor({ inventory, onCancel, onSaved }) {
@@ -510,48 +646,53 @@ function InventoryEditor({ inventory, onCancel, onSaved }) {
     }
   }
   return (
-    <form className="admin-panel admin-form" onSubmit={save}>
-      <h2>Inventario · {inventory.productName}</h2>
-      <p>
-        Disponibles: {current.availableQuantity} · Reservadas:{" "}
-        {current.reservedQuantity ?? 0}
-      </p>
-      {inventory.uninitialized && (
+    <AdminModal
+      title={`Inventario · ${inventory.productName}`}
+      busy={busy}
+      onClose={onCancel}
+    >
+      <form className="admin-panel admin-form" onSubmit={save}>
         <p>
-          Este producto aún no tiene inventario. Guardar inicializará sus
-          existencias.
+          Disponibles: {current.availableQuantity} · Reservadas:{" "}
+          {current.reservedQuantity ?? 0}
         </p>
-      )}
-      <p>
-        Introduce el total disponible, no la cantidad que deseas sumar. Las
-        reservas no se modifican.
-      </p>
-      <AdminFeedback error={error} />
-      <label>
-        Nueva cantidad disponible
-        <input
-          type="number"
-          min="0"
-          step="1"
-          required
-          value={quantity}
-          disabled={busy}
-          onChange={(e) => setQuantity(e.target.value)}
-        />
-      </label>
-      <div className="admin-actions">
-        <button className="button button-dark" disabled={busy}>
-          {busy ? "Guardando…" : "Guardar existencias"}
-        </button>
-        <button
-          type="button"
-          className="button button-outline"
-          disabled={busy}
-          onClick={onCancel}
-        >
-          Cancelar
-        </button>
-      </div>
-    </form>
+        {inventory.uninitialized && (
+          <p>
+            Este producto aún no tiene inventario. Guardar inicializará sus
+            existencias.
+          </p>
+        )}
+        <p>
+          Introduce el total disponible, no la cantidad que deseas sumar. Las
+          reservas no se modifican.
+        </p>
+        <AdminFeedback error={error} />
+        <label>
+          Nueva cantidad disponible
+          <input
+            type="number"
+            min="0"
+            step="1"
+            required
+            value={quantity}
+            disabled={busy}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
+        </label>
+        <div className="admin-actions">
+          <button className="button button-dark" disabled={busy}>
+            {busy ? "Guardando…" : "Guardar existencias"}
+          </button>
+          <button
+            type="button"
+            className="button button-outline"
+            disabled={busy}
+            onClick={onCancel}
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </AdminModal>
   );
 }

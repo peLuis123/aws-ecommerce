@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { adminError, statusLabel } from "../../utils/admin";
 import { AdminFeedback } from "./AdminFeedback";
+import { AdminModal } from "./AdminModal";
 import { formatMoney } from "../../utils/money";
 // Persist the exact request before sending so a network retry reuses its identity.
 export function FinancialAction({
@@ -22,6 +23,7 @@ export function FinancialAction({
     }
   });
   const [review, setReview] = useState(null),
+    [reviewOpen, setReviewOpen] = useState(true),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   function prepare(e) {
@@ -29,6 +31,7 @@ export function FinancialAction({
     setError("");
     try {
       setReview(build());
+      setReviewOpen(true);
     } catch (err) {
       setError(adminError(err));
     }
@@ -59,7 +62,7 @@ export function FinancialAction({
   return (
     <form className="admin-panel admin-form" onSubmit={prepare}>
       <h2>{kind === "payout" ? "Solicitar retiro" : "Solicitar reembolso"}</h2>
-      <AdminFeedback error={error} />
+      <AdminFeedback error={body && reviewOpen && !operation?.result ? "" : error} />
       {operation?.result ? (
         <>
           <p role="status">
@@ -85,9 +88,10 @@ export function FinancialAction({
       ) : (
         <>
           <fieldset disabled={busy || !!body}>{children}</fieldset>
-          {body ? (
+          {body && reviewOpen ? (
+            <AdminModal title="Revisa antes de confirmar" busy={busy} onClose={() => { setReviewOpen(false); if (!operation) setReview(null); }}>
             <div className="admin-review">
-              <h3>Revisa antes de confirmar</h3>
+              <AdminFeedback error={error} />
               <p>
                 Importe:{" "}
                 <strong>{formatMoney(body.amount, body.currency)}</strong>
@@ -132,6 +136,9 @@ export function FinancialAction({
                 </p>
               )}
             </div>
+            </AdminModal>
+          ) : body ? (
+            <button type="button" className="button button-dark" onClick={() => setReviewOpen(true)}>Revisar solicitud pendiente</button>
           ) : (
             <button className="button button-dark">Revisar solicitud</button>
           )}

@@ -12,7 +12,12 @@ vi.mock("../src/hooks/useAuth", () => ({
   useAuth: () => ({ user: { userId: "qa-admin" } }),
 }));
 afterEach(cleanup);
-beforeEach(() => sessionStorage.clear());
+beforeEach(() => {
+  sessionStorage.clear();
+  // jsdom does not implement the native dialog top layer.
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute("open", ""); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };
+});
 it("converts decimal amounts without accepting zero, negatives or excessive precision", () => {
   expect(minorUnits("19.99")).toBe(1999);
   expect(minorUnits("0.29")).toBe(29);
