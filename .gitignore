@@ -34,3 +34,10 @@ firebase-debug.log*
 
 # Private Firebase environment configuration
 .env.*.local
+
+# Markdown: keep only README files and skill documentation
+*.[mM][dD]
+![rR][eE][aA][dD][mM][eE].[mM][dD]
+![rR][eE][aA][dD].[mM][dD]
+!**/skills/**/*.[mM][dD]
+![sS][kK][iI][lL][lL].[mM][dD]

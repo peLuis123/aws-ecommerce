@@ -62,7 +62,7 @@ Las fotografías referenciales de la demo proceden de Unsplash y Pexels y requie
 
 ## Paginación
 
-El catálogo solicita páginas a la API y conserva búsqueda, categoría, orden y página en la URL. El contrato y las consideraciones de despliegue están en [PAGINATION.md](PAGINATION.md).
+El catálogo solicita `GET /products?page=1&pageSize=12` y conserva búsqueda, categoría, orden y página en la URL. La API devuelve `{ items, page, pageSize, total, totalPages }`. Los filtros se envían mediante `q`, `category` y `sort`; el tamaño de página admite valores de 1 a 48.
 
 El backend aplica filtros y orden antes de devolver la página, pero el índice actual requiere leer el catálogo del comercio para calcular esos resultados.
 
