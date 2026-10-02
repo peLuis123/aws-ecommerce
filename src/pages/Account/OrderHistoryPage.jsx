@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ordersApi } from "../../api/orders.api";
+import { statusLabel } from "../../utils/admin";
 import { formatMoney } from "../../utils/money";
 
 export function OrderHistoryPage() {
@@ -81,8 +82,10 @@ export function OrderHistoryPage() {
         {orders.map((order) => (
           <div className="order-row" key={order.orderId}>
             <div>
-              <strong>Orden {order.orderId}</strong>
-              <span>{order.orderStatus || order.status}</span>
+              <strong title={order.orderId}>
+                Pedido #{order.orderId.slice(0, 8).toUpperCase()}
+              </strong>
+              <span>{statusLabel(order.orderStatus || order.status)}</span>
             </div>
             <strong>
               {formatMoney(
