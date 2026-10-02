@@ -1,0 +1,180 @@
+.auth-page {
+  @apply tw:relative tw:grid tw:grid-cols-[minmax(0,_48fr)_minmax(0,_52fr)] tw:w-[min(90%,_1120px)] tw:m-[45px_auto_75px] tw:min-h-147.5 tw:bg-[#efeee7] tw:overflow-hidden;
+}
+.auth-content {
+  grid-column: 2;
+  @apply tw:min-w-0 tw:p-[60px_clamp(24px,_4vw,_64px)] tw:self-center;
+}
+.auth-page:before {
+  content: "";
+  @apply tw:absolute tw:top-0 tw:left-0 tw:bottom-0 tw:w-[48%];
+  background:
+    linear-gradient(0deg, #27302155, #27302110),
+    url("https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1000&q=85")
+      center/cover;
+}
+.auth-page:after {
+  content: "Un espacio para volver a ti.";
+  @apply tw:absolute tw:bottom-[45px] tw:left-[5%] tw:w-[33%] tw:font-serif tw:text-[40px] tw:leading-[1.2] tw:text-white;
+}
+.auth-page h1 {
+  @apply tw:text-[38px] tw:leading-[1.2];
+}
+.auth-form {
+  @apply tw:grid tw:gap-[9px] tw:mt-[25px];
+}
+.auth-form label {
+  @apply tw:text-[11px] tw:text-ink-muted;
+}
+.auth-form input {
+  @apply tw:h-11 tw:border tw:border-solid tw:border-[#d4d7c9] tw:bg-[#fafbf6] tw:p-[0_12px] tw:rounded-none tw:text-ink tw:w-full tw:mb-[9px] tw:text-[13px];
+}
+.auth-form .button {
+  @apply tw:mt-2;
+}
+.form-error {
+  @apply tw:text-[10px] tw:text-[#a13e30] tw:leading-[1.4];
+}
+.auth-switch {
+  @apply tw:text-[11px] tw:mt-5 tw:text-ink-muted;
+}
+.auth-switch a {
+  @apply tw:underline tw:text-ink;
+}
+.demo-accounts {
+  @apply tw:pt-5 tw:mt-[25px] tw:border-t tw:[border-top-style:solid] tw:border-t-[#d4d7c9];
+}
+.demo-accounts p {
+  @apply tw:text-[10px] tw:text-ink-muted tw:mb-3;
+}
+.demo-accounts > div {
+  @apply tw:flex tw:gap-[9px];
+}
+.demo-accounts .button {
+  @apply tw:text-[10px] tw:min-h-9.5 tw:p-[9px_12px] tw:bg-[#fafbf6];
+}
+@media (max-width: 760px) {
+  .auth-page {
+    @apply tw:grid-cols-[minmax(0,_1fr)] tw:m-[25px_auto_45px] tw:min-h-0;
+  }
+  .auth-content {
+    grid-column: 1;
+    @apply tw:w-full tw:max-w-135;
+    justify-self: center;
+    @apply tw:p-[35px_24px];
+  }
+  .auth-page:before,
+  .auth-page:after {
+    @apply tw:hidden;
+  }
+  .auth-page h1 {
+    @apply tw:text-[36px];
+  }
+}
+.login-page .auth-content {
+  @apply tw:pt-[35px] tw:pb-9.5;
+}
+.login-back {
+  @apply tw:inline-flex tw:items-center tw:gap-2 tw:text-[10px] tw:text-ink-muted tw:mb-7;
+}
+.login-back svg {
+  transform: rotate(180deg);
+}
+.login-page h1 {
+  @apply tw:text-[44px] tw:mb-[17px];
+}
+.login-page h1 em {
+  @apply tw:text-accent;
+}
+.login-intro {
+  @apply tw:text-[12px] tw:text-ink-muted tw:mb-5;
+}
+.login-demo-notice {
+  @apply tw:flex tw:items-start tw:gap-[11px] tw:bg-[#e4e8db] tw:p-3.5 tw:text-[#4b5941];
+}
+.login-demo-notice svg {
+  @apply tw:mt-0.5;
+}
+.login-demo-notice p {
+  @apply tw:text-[10px] tw:leading-[1.65] tw:m-0;
+}
+.login-demo-notice strong {
+  @apply tw:block tw:font-semibold tw:mb-1;
+}
+.login-page .auth-form {
+  @apply tw:gap-4.5 tw:mt-[23px];
+}
+.login-field {
+  @apply tw:grid tw:gap-2;
+}
+.login-page .auth-form input {
+  @apply tw:m-0 tw:h-12 tw:text-[14px];
+}
+.login-page .auth-form label {
+  @apply tw:text-[12px] tw:text-[#505747];
+}
+.password-field {
+  @apply tw:relative;
+}
+.login-page .password-field input {
+  @apply tw:pr-[75px];
+}
+.password-toggle {
+  @apply tw:absolute tw:right-[5px] tw:top-[5px] tw:bottom-[5px] tw:border-0 tw:bg-transparent tw:p-[0_10px] tw:text-[10px] tw:text-ink;
+}
+.login-page input[aria-invalid="true"] {
+  @apply tw:border-[#ad4f36] tw:bg-[#fff8f2];
+}
+.login-page .form-error {
+  @apply tw:text-[11px] tw:leading-[1.6];
+}
+.login-server-error {
+  @apply tw:p-[13px_15px] tw:text-[#8a3826] tw:bg-[#f5e5db] tw:text-[12px] tw:m-[17px_0_0] tw:border-l-2 tw:[border-left-style:solid] tw:border-l-[#ad4f36];
+}
+.login-page .auth-form .button {
+  @apply tw:mt-0.5;
+}
+.login-page .auth-switch {
+  @apply tw:m-[20px_0_0];
+}
+.login-page .demo-accounts {
+  @apply tw:mt-[23px] tw:pt-5;
+}
+.login-page .demo-accounts > p {
+  @apply tw:text-[8px] tw:tracking-[0.8px];
+}
+.login-page .demo-accounts > div {
+  @apply tw:grid tw:grid-cols-[1fr_1fr];
+}
+.login-page .demo-accounts .button {
+  @apply tw:leading-[1.5] tw:p-2.5 tw:min-h-11 tw:text-center;
+}
+@media (max-width: 760px) {
+  .login-page .auth-content {
+    @apply tw:p-[26px_24px_30px];
+  }
+  .login-back {
+    @apply tw:mb-[25px];
+  }
+  .login-page h1 {
+    @apply tw:text-[40px];
+  }
+  .login-page .auth-form input {
+    @apply tw:text-[16px];
+  }
+  .login-page .demo-accounts > div {
+    @apply tw:grid-cols-[1fr];
+  }
+  .login-demo-notice p {
+    @apply tw:text-[11px];
+  }
+  .login-page .auth-switch {
+    @apply tw:text-[12px];
+  }
+  .login-page .demo-accounts .button {
+    @apply tw:text-[12px];
+  }
+  .login-page .demo-accounts > p {
+    @apply tw:text-[9px];
+  }
+}

@@ -1,0 +1,204 @@
+.dashboard-shell {
+  @apply tw:grid tw:grid-cols-[210px_minmax(0,_1fr)] tw:w-[90%] tw:max-w-337.5 tw:m-[40px_auto_85px] tw:gap-[55px] tw:min-h-110;
+}
+.dashboard-sidebar {
+  @apply tw:min-w-0 tw:bg-[#eeefe7] tw:p-[27px_22px];
+  align-self: start;
+}
+.dashboard-sidebar strong {
+  @apply tw:block tw:font-serif tw:text-[25px] tw:m-[0_0_24px];
+  overflow-wrap: anywhere;
+}
+.dashboard-sidebar .eyebrow {
+  @apply tw:text-[9px];
+}
+.dashboard-sidebar nav {
+  @apply tw:flex tw:flex-col tw:gap-1;
+}
+.dashboard-sidebar nav a {
+  @apply tw:text-[12px] tw:p-3 tw:text-[#6f7567];
+}
+.dashboard-sidebar nav a.active,
+.dashboard-sidebar nav a:hover {
+  @apply tw:bg-[#dfe4d6] tw:text-ink;
+}
+.dashboard-content {
+  @apply tw:min-w-0;
+}
+.dashboard-page,
+.dashboard-content .account-page {
+  @apply tw:p-[12px_0] tw:w-full tw:m-0;
+}
+.dashboard-page h1,
+.account-page h1 {
+  @apply tw:text-[42px];
+}
+.dashboard-metrics {
+  @apply tw:grid tw:grid-cols-[repeat(3,_minmax(0,_1fr))] tw:gap-4.5 tw:mt-[35px];
+}
+.dashboard-metrics a {
+  @apply tw:bg-[#efeee5] tw:p-[25px] tw:min-h-[145px] tw:flex tw:flex-col tw:justify-between tw:gap-5;
+}
+.dashboard-metrics span {
+  @apply tw:text-[11px] tw:text-ink-muted;
+}
+.dashboard-metrics strong {
+  @apply tw:font-serif tw:text-[30px] tw:font-normal;
+}
+.dashboard-metrics a:hover {
+  @apply tw:bg-[#e8ebdf];
+}
+.dashboard-title-row {
+  @apply tw:flex tw:justify-between tw:items-center;
+}
+.order-list {
+  @apply tw:mt-7.5;
+}
+.order-row {
+  @apply tw:flex tw:justify-between tw:items-center tw:gap-5 tw:p-[22px_15px] tw:border-b tw:[border-bottom-style:solid] tw:border-b-border;
+}
+.order-row:nth-child(odd) {
+  @apply tw:bg-[#f0f1e9];
+}
+.order-row > div {
+  @apply tw:grid tw:gap-2;
+}
+.order-row strong {
+  @apply tw:text-[12px] tw:font-medium;
+}
+.order-row span {
+  @apply tw:text-[10px] tw:text-ink-muted;
+}
+.balance-panel {
+  @apply tw:max-w-120 tw:p-[35px] tw:bg-ink tw:text-white tw:grid tw:gap-5 tw:mt-[35px];
+}
+.balance-panel span {
+  @apply tw:text-[12px] tw:text-[#d2d8c7];
+}
+.balance-panel strong {
+  @apply tw:text-[48px] tw:font-serif tw:font-normal;
+}
+.balance-panel small {
+  @apply tw:text-[10px] tw:text-[#d2d8c7];
+}
+.account-actions {
+  @apply tw:flex tw:gap-5 tw:mt-7.5 tw:items-center;
+}
+.account-welcome {
+  @apply tw:bg-[#eeefe7] tw:p-7.5 tw:mt-7.5;
+}
+.account-welcome p {
+  @apply tw:text-[13px] tw:text-ink-muted;
+}
+.account-welcome h2 {
+  @apply tw:text-[28px];
+}
+.placeholder-page {
+  @apply tw:min-h-112.5 tw:pt-22.5;
+}
+.placeholder-page p {
+  @apply tw:text-[14px] tw:text-ink-muted;
+}
+@media (max-width: 1100px) {
+  .dashboard-shell {
+    @apply tw:gap-7.5 tw:grid-cols-[190px_minmax(0,_1fr)];
+  }
+  .dashboard-metrics a {
+    @apply tw:p-4.5;
+  }
+  .dashboard-metrics strong {
+    @apply tw:text-[25px];
+  }
+}
+@media (max-width: 760px) {
+  .dashboard-shell {
+    @apply tw:grid-cols-1 tw:gap-[25px] tw:mt-[25px];
+  }
+  .dashboard-sidebar {
+    @apply tw:p-5;
+  }
+  .dashboard-sidebar strong {
+    @apply tw:mb-[15px] tw:text-[22px];
+  }
+  .dashboard-sidebar nav {
+    @apply tw:flex-row tw:gap-[5px] tw:overflow-auto;
+  }
+  .dashboard-sidebar nav a {
+    @apply tw:whitespace-nowrap tw:p-2.5 tw:text-[11px];
+  }
+  .dashboard-page h1,
+  .account-page h1 {
+    @apply tw:text-[36px];
+  }
+  .dashboard-metrics {
+    @apply tw:grid-cols-[1fr] tw:gap-3 tw:mt-[25px];
+  }
+  .dashboard-metrics a {
+    @apply tw:min-h-[95px] tw:flex-row tw:items-center tw:p-5.5;
+  }
+  .balance-panel {
+    @apply tw:p-[25px];
+  }
+  .balance-panel strong {
+    @apply tw:text-[40px];
+  }
+  .account-actions {
+    @apply tw:flex-wrap tw:gap-2.5;
+  }
+  .order-row {
+    @apply tw:p-[18px_10px];
+  }
+}
+.recent-orders {
+  @apply tw:mt-[45px];
+}
+.recent-orders .section-heading {
+  @apply tw:mb-5 tw:items-center;
+}
+.recent-orders h2 {
+  @apply tw:text-[27px] tw:m-0;
+}
+.recent-orders .order-list {
+  @apply tw:mt-0;
+}
+.recent-orders > p {
+  @apply tw:text-[12px] tw:text-ink-muted;
+}
+.order-status {
+  @apply tw:bg-[#e1e7d7] tw:text-[#50643d]! tw:p-[6px_10px] tw:whitespace-nowrap tw:text-[10px];
+}
+.account-welcome {
+  @apply tw:flex tw:gap-5;
+}
+.account-welcome h2 {
+  @apply tw:mb-2.5;
+}
+.account-welcome .text-link {
+  @apply tw:text-[11px];
+}
+.account-welcome > svg {
+  @apply tw:mt-[5px];
+}
+.account-welcome p {
+  @apply tw:mb-[17px];
+}
+@media (max-width: 760px) {
+  .recent-orders .section-heading {
+    @apply tw:flex-row tw:gap-2.5;
+  }
+  .recent-orders h2 {
+    @apply tw:text-[22px];
+  }
+  .recent-orders .text-link {
+    @apply tw:text-[10px] tw:gap-[7px];
+  }
+  .order-status {
+    @apply tw:p-[5px] tw:text-[9px];
+  }
+  .account-welcome {
+    @apply tw:p-[23px];
+  }
+  .account-welcome h2 {
+    @apply tw:text-[24px];
+  }
+}

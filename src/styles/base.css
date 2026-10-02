@@ -1,0 +1,104 @@
+/* Browser defaults, typography and accessibility. */
+
+:root {
+  @apply tw:font-sans tw:text-ink tw:bg-bg;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+* {
+  @apply tw:box-border;
+}
+html {
+  @apply tw:min-w-0;
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+body {
+  @apply tw:m-0 tw:min-w-0;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+button {
+  @apply tw:cursor-pointer;
+}
+button:disabled {
+  @apply tw:cursor-not-allowed tw:opacity-[0.5];
+}
+a {
+  @apply tw:text-inherit tw:no-underline;
+}
+img {
+  @apply tw:max-w-full tw:block;
+}
+h1,
+h2,
+h3,
+p {
+  @apply tw:mt-0;
+}
+h1,
+h2,
+h3 {
+  @apply tw:font-serif tw:font-normal;
+}
+h1 {
+  @apply tw:text-[clamp(2.6rem,_4.6vw,_4.5rem)] tw:leading-[1.12] tw:tracking-[-0.045em] tw:mb-6;
+}
+h2 {
+  @apply tw:text-[clamp(1.9rem,_3vw,_2.8rem)] tw:leading-[1.2] tw:tracking-[-0.035em];
+}
+p {
+  @apply tw:leading-[1.7];
+}
+em {
+  @apply tw:font-normal;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--tw-color-accent);
+  @apply tw:outline-offset-[5px];
+}
+::selection {
+  @apply tw:bg-[#dcc5b2];
+}
+#root {
+  @apply tw:min-h-screen;
+}
+svg {
+  @apply tw:shrink-0;
+}
+input,
+select {
+  @apply tw:min-w-0;
+}
+input[type="radio"] {
+  accent-color: var(--tw-color-accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -4,7 +4,6 @@ import { categoriesApi } from "../../api/categories.api";
 import { productsApi } from "../../api/products.api";
 import { ProductCard } from "../../components/product/ProductCard";
 import { Icon } from "../../components/ui/Icon";
-import "./pagination.css";
 
 export function CatalogPage() {
   const [params, setParams] = useSearchParams();

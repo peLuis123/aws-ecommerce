@@ -1,0 +1,20 @@
+.catalog-page .catalog-pagination {
+  @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-5 tw:p-[32px_0];
+}
+.catalog-page .catalog-pagination > div {
+  @apply tw:flex tw:items-center tw:gap-4;
+}
+.catalog-page .catalog-pagination button:disabled {
+  @apply tw:opacity-[.4] tw:cursor-not-allowed;
+}
+@media (max-width: 600px) {
+  .catalog-page .catalog-pagination {
+    @apply tw:justify-center;
+  }
+  .catalog-page .catalog-pagination > div {
+    @apply tw:gap-2.5;
+  }
+  .catalog-page .catalog-pagination .button {
+    @apply tw:p-3;
+  }
+}

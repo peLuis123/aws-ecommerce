@@ -1,0 +1,168 @@
+.catalog-heading {
+  @apply tw:flex;
+  align-items: flex-end;
+  @apply tw:justify-between tw:gap-7.5 tw:mb-10.5;
+}
+.catalog-heading h1 {
+  @apply tw:text-[clamp(2.8rem,_4.2vw,_4.3rem)] tw:mb-0;
+}
+.catalog-heading h1 em {
+  @apply tw:text-accent;
+}
+.catalog-heading > p {
+  @apply tw:text-[12px] tw:leading-[1.9] tw:text-ink-muted tw:m-[0_0_5px];
+}
+.catalog-toolbar {
+  @apply tw:flex tw:items-center tw:justify-between tw:gap-[25px] tw:border-b tw:[border-bottom-style:solid] tw:border-b-border tw:p-[19px_0];
+}
+.category-filter {
+  @apply tw:flex tw:gap-[9px] tw:overflow-auto;
+}
+.category-filter button {
+  @apply tw:bg-transparent tw:border tw:border-solid tw:border-transparent tw:p-[10px_18px] tw:text-[11px] tw:text-ink-muted tw:rounded-[2px] tw:whitespace-nowrap;
+}
+.category-filter button.is-active {
+  @apply tw:bg-ink tw:text-white;
+}
+.category-filter button:hover:not(.is-active) {
+  @apply tw:bg-[#eeeade];
+}
+.search-field {
+  @apply tw:flex tw:items-center tw:gap-2.5 tw:min-w-57.5 tw:border-b tw:[border-bottom-style:solid] tw:border-b-[#cccec3] tw:pb-[7px];
+}
+.search-field input {
+  @apply tw:w-full tw:border-0 tw:bg-transparent tw:text-[11px] tw:p-[5px_0] tw:text-inherit;
+}
+.catalog-results {
+  @apply tw:flex tw:justify-between tw:gap-4.5 tw:items-center tw:p-[22px_0] tw:text-ink-muted tw:text-[10px];
+}
+.catalog-results select {
+  @apply tw:border-0 tw:bg-transparent tw:text-ink tw:p-[5px_2px_5px_12px] tw:text-[10px];
+}
+.catalog-page .product-grid {
+  @apply tw:gap-y-10.5;
+}
+.back-link {
+  @apply tw:text-[11px] tw:inline-flex tw:items-center tw:gap-2.5;
+}
+.detail-grid {
+  @apply tw:grid tw:grid-cols-[1.12fr_1fr] tw:gap-[8%] tw:items-start tw:mt-7;
+}
+.detail-image-wrap {
+  @apply tw:bg-[#eeeae2] tw:relative;
+}
+.detail-image-wrap img {
+  @apply tw:w-full tw:aspect-[0.94] tw:object-cover;
+}
+.detail-copy {
+  @apply tw:p-[25px_0];
+}
+.detail-copy h1 {
+  @apply tw:text-[clamp(2.6rem,_4vw,_4rem)] tw:mb-4;
+}
+.detail-price {
+  @apply tw:text-[23px] tw:mb-[23px];
+}
+.detail-description {
+  @apply tw:text-[13px] tw:text-ink-muted tw:leading-[1.9] tw:max-w-112.5;
+}
+.detail-stock {
+  @apply tw:flex tw:items-center tw:gap-2 tw:text-[10px] tw:m-[23px_0] tw:text-[#697a50];
+}
+.purchase-row {
+  @apply tw:flex tw:gap-3 tw:m-[24px_0];
+}
+.purchase-row .button {
+  @apply tw:flex-1;
+}
+.quantity-control {
+  @apply tw:flex tw:items-center tw:border tw:border-solid tw:border-border tw:h-[49px];
+}
+.quantity-control button {
+  @apply tw:border-0 tw:bg-transparent tw:w-8.5 tw:h-full tw:text-[18px] tw:text-ink;
+}
+.quantity-control input {
+  @apply tw:w-[35px] tw:border-0 tw:bg-transparent tw:text-center;
+  appearance: textfield;
+  @apply tw:text-[12px];
+  -moz-appearance: textfield;
+}
+.quantity-control input::-webkit-inner-spin-button {
+  @apply tw:appearance-none;
+}
+.detail-facts {
+  @apply tw:border-t tw:[border-top-style:solid] tw:border-t-border tw:mt-7;
+}
+.detail-facts details {
+  @apply tw:border-b tw:[border-bottom-style:solid] tw:border-b-border tw:p-[17px_0] tw:text-[12px];
+}
+.detail-facts summary {
+  @apply tw:cursor-pointer tw:font-medium;
+}
+.detail-facts p {
+  @apply tw:text-[12px] tw:text-ink-muted tw:m-[15px_0_0];
+}
+.detail-note {
+  @apply tw:flex tw:gap-2.5 tw:items-center tw:text-[10px] tw:text-ink-muted;
+}
+.related-section {
+  @apply tw:mt-[75px];
+}
+@media (max-width: 760px) {
+  .catalog-heading {
+    @apply tw:block tw:mb-[25px];
+  }
+  .catalog-heading h1 {
+    @apply tw:text-[43px];
+  }
+  .catalog-heading > p {
+    @apply tw:mt-5.5 tw:text-[11px];
+  }
+  .catalog-toolbar {
+    @apply tw:flex-col tw:items-stretch tw:gap-5 tw:p-[10px_0_20px];
+  }
+  .category-filter {
+    @apply tw:gap-0.5;
+  }
+  .category-filter button {
+    @apply tw:p-[10px_14px];
+  }
+  .search-field {
+    @apply tw:min-w-0 tw:w-full;
+  }
+  .catalog-results {
+    @apply tw:text-[9px] tw:gap-2.5;
+  }
+  .catalog-results select {
+    @apply tw:text-[9px] tw:max-w-[135px] tw:pl-1;
+  }
+  .catalog-page .product-grid {
+    @apply tw:gap-y-7.5;
+  }
+  .detail-grid {
+    @apply tw:grid-cols-[1fr] tw:gap-5;
+  }
+  .detail-copy {
+    @apply tw:pt-2.5;
+  }
+  .detail-copy h1 {
+    @apply tw:text-[42px];
+  }
+  .detail-image-wrap img {
+    @apply tw:aspect-[1.05];
+  }
+  .related-section {
+    @apply tw:mt-[45px];
+  }
+}
+@media (max-width: 380px) {
+  .category-filter button {
+    @apply tw:p-2.5;
+  }
+}
+.category-filter {
+  scrollbar-width: none;
+}
+.category-filter::-webkit-scrollbar {
+  @apply tw:hidden;
+}

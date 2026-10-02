@@ -1,0 +1,238 @@
+.hero-section {
+  @apply tw:relative tw:min-h-147.5 tw:h-[calc(100vh_-_195px)] tw:max-h-190 tw:isolate tw:bg-[#706a58] tw:text-white tw:overflow-hidden;
+}
+.hero-background {
+  @apply tw:absolute tw:inset-0 tw:w-full tw:h-full tw:object-cover;
+  object-position: center 56%;
+  @apply tw:z-[-2];
+}
+.hero-section:after {
+  content: "";
+  @apply tw:absolute tw:inset-0 tw:z-[-1];
+  background: linear-gradient(
+    90deg,
+    rgba(28, 30, 22, 0.75),
+    rgba(35, 35, 24, 0.24) 55%,
+    rgba(30, 30, 22, 0.08)
+  );
+}
+.hero-copy {
+  @apply tw:p-[65px_8%_80px];
+}
+.hero-copy h1 {
+  @apply tw:text-[clamp(3.7rem,_6.6vw,_6.4rem)] tw:leading-[1.06] tw:tracking-[-0.05em] tw:text-[#fffaf0] tw:mb-[23px];
+}
+.hero-copy h1 em {
+  @apply tw:text-[#e8d6b8];
+}
+.hero-copy .eyebrow {
+  @apply tw:text-[#f1e7d5] tw:text-[9px] tw:flex tw:gap-3 tw:items-center tw:mb-[23px];
+}
+.hero-copy .eyebrow > span {
+  @apply tw:w-[23px] tw:h-[1px] tw:bg-[#e8d6b8];
+}
+.hero-copy > p:not(.eyebrow) {
+  @apply tw:text-[13px] tw:leading-[1.85] tw:text-[#f1ede3] tw:mb-[27px];
+}
+.hero-caption {
+  @apply tw:absolute tw:bottom-[23px] tw:left-[5%] tw:right-[5%] tw:flex tw:justify-between tw:text-[9px] tw:tracking-[1.4px] tw:text-[#f2eee6];
+}
+.hero-caption span:last-child {
+  @apply tw:tracking-[0.3px];
+}
+.hero-stamp {
+  @apply tw:absolute tw:right-[6%] tw:top-11 tw:w-28 tw:h-28 tw:rounded-[50%] tw:bg-[#f0ecde] tw:text-[#444b37] tw:flex tw:flex-col tw:items-center tw:justify-center;
+  transform: rotate(12deg);
+  @apply tw:text-[9px] tw:tracking-[1.2px] tw:gap-1;
+}
+.hero-stamp span {
+  @apply tw:font-serif tw:text-[18px] tw:tracking-[-0.5px];
+  font-style: italic;
+}
+.manifesto-line {
+  @apply tw:p-[28px_10%] tw:flex tw:items-center tw:justify-between tw:border-b tw:[border-bottom-style:solid] tw:border-b-border tw:text-[12px] tw:tracking-[0.3px];
+}
+.manifesto-line .tiny-star {
+  @apply tw:text-[#a8674a];
+}
+.home-section {
+  @apply tw:w-[90%] tw:max-w-360 tw:m-auto tw:p-[75px_0];
+}
+.category-image {
+  @apply tw:relative tw:overflow-hidden tw:aspect-[1.17] tw:bg-[#e8e1d6];
+}
+.category-image img {
+  @apply tw:w-full tw:h-full tw:object-cover;
+  transition: transform 0.7s;
+}
+.category-card:hover img {
+  transform: scale(1.045);
+}
+.category-image > span {
+  @apply tw:absolute tw:left-[15px] tw:top-[15px] tw:text-white tw:text-[10px] tw:border tw:border-solid tw:border-[#ffffff70] tw:rounded-[50%] tw:w-[27px] tw:h-[27px] tw:grid tw:place-items-center tw:bg-[#30291930];
+}
+.category-card > div:not(.category-image) {
+  @apply tw:flex tw:justify-between tw:items-center tw:mt-[19px];
+}
+.category-card h3 {
+  @apply tw:text-[24px] tw:m-0;
+}
+.category-card > p {
+  @apply tw:text-[11px] tw:m-[7px_0_0] tw:text-ink-muted;
+}
+.featured-section {
+  @apply tw:border-t tw:[border-top-style:solid] tw:border-t-border tw:pt-14.5 tw:pb-20;
+}
+.story-section {
+  @apply tw:grid tw:grid-cols-[1fr_1fr] tw:bg-[#eeeade];
+}
+.story-image {
+  @apply tw:relative tw:min-h-147.5;
+}
+.story-image img {
+  @apply tw:h-full tw:w-full tw:object-cover tw:absolute;
+}
+.story-image > span {
+  @apply tw:absolute tw:bottom-7 tw:left-[10%] tw:text-[9px] tw:tracking-[2px] tw:text-white;
+  text-shadow: 0 1px 5px #000;
+}
+.story-copy {
+  @apply tw:p-[60px_clamp(30px,_7vw,_115px)] tw:flex tw:items-start tw:flex-col tw:justify-center;
+}
+.story-symbol {
+  @apply tw:text-[43px] tw:text-[#a76446] tw:mb-[25px];
+}
+.story-copy h2 {
+  @apply tw:text-[clamp(2.5rem,_4.3vw,_4.2rem)] tw:mb-6.5 tw:leading-[1.16];
+}
+.story-copy h2 em {
+  @apply tw:text-[#a76446];
+}
+.story-copy > p:not(.eyebrow) {
+  @apply tw:text-[12px] tw:leading-[1.85] tw:text-[#66685f] tw:max-w-[365px];
+}
+.story-copy .text-link {
+  @apply tw:mt-[15px];
+}
+.closing-note {
+  @apply tw:text-center tw:p-[85px_24px];
+}
+.closing-note h2 {
+  @apply tw:text-[clamp(2.8rem,_4.5vw,_4.4rem)] tw:mb-7.5;
+}
+.closing-note em {
+  @apply tw:text-accent;
+}
+@media (min-width: 1600px) {
+  .hero-copy {
+    @apply tw:pl-[calc((100vw_-_1340px)_/_2)];
+  }
+  .hero-copy h1 {
+    @apply tw:text-[100px];
+  }
+}
+@media (max-width: 1100px) {
+  .story-copy {
+    @apply tw:p-10;
+  }
+  .story-image {
+    @apply tw:min-h-130;
+  }
+  .hero-copy {
+    @apply tw:pt-15;
+  }
+  .hero-section {
+    @apply tw:min-h-142.5 tw:h-auto;
+  }
+}
+@media (max-width: 760px) {
+  .hero-section {
+    @apply tw:min-h-145;
+  }
+  .hero-background {
+    object-position: 62% center;
+  }
+  .hero-copy {
+    @apply tw:p-[55px_7%_90px];
+  }
+  .hero-copy h1 {
+    @apply tw:text-[67px];
+  }
+  .hero-copy .eyebrow {
+    @apply tw:text-[8px] tw:tracking-[1.5px];
+  }
+  .hero-copy > p:not(.eyebrow) {
+    @apply tw:text-[12px];
+  }
+  .hero-stamp {
+    @apply tw:w-[83px] tw:h-[83px] tw:right-[6%] tw:top-7.5 tw:text-[7px] tw:opacity-[0.95];
+  }
+  .hero-stamp span {
+    @apply tw:text-[14px];
+  }
+  .hero-stamp svg {
+    @apply tw:w-4.5;
+  }
+  .hero-caption {
+    @apply tw:text-[7px];
+  }
+  .hero-caption span:last-child {
+    @apply tw:hidden;
+  }
+  .manifesto-line {
+    @apply tw:p-[23px_5%] tw:text-[10px] tw:gap-[15px] tw:justify-center;
+  }
+  .manifesto-line > span:nth-last-child(-n + 2) {
+    @apply tw:hidden;
+  }
+  .manifesto-line .tiny-star {
+    @apply tw:text-[20px];
+  }
+  .home-section {
+    @apply tw:p-[48px_0];
+  }
+  .category-image {
+    @apply tw:aspect-[1];
+  }
+  .category-card h3 {
+    @apply tw:text-[22px];
+  }
+  .category-card > p {
+    @apply tw:text-[10px];
+  }
+  .story-section {
+    @apply tw:grid-cols-[1fr];
+  }
+  .story-image {
+    @apply tw:min-h-90;
+  }
+  .story-copy {
+    @apply tw:p-[42px_7%];
+  }
+  .story-copy h2 {
+    @apply tw:text-[43px];
+  }
+  .story-copy p {
+    @apply tw:max-w-full;
+  }
+  .story-symbol {
+    @apply tw:text-[34px] tw:mb-5;
+  }
+  .closing-note {
+    @apply tw:p-[55px_5%];
+  }
+  .closing-note h2 {
+    @apply tw:text-[43px];
+  }
+}
+@media (max-width: 380px) {
+  .hero-copy h1 {
+    @apply tw:text-[58px];
+  }
+  .hero-stamp {
+    @apply tw:w-17.5 tw:h-17.5 tw:right-[5%] tw:top-6;
+  }
+  .hero-copy .eyebrow {
+    @apply tw:max-w-45;
+  }
+}

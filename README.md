@@ -66,6 +66,20 @@ El catálogo solicita `GET /products?page=1&pageSize=12` y conserva búsqueda, c
 
 El backend aplica filtros y orden antes de devolver la página, pero el índice actual requiere leer el catálogo del comercio para calcular esos resultados.
 
+## Estilos
+
+La aplicación usa Tailwind CSS 4 mediante el plugin de Vite. `src/tailwind.css` es la única entrada de estilos y define los colores y tipografías con `@theme`. Las utilidades llevan el prefijo `tw:`, por ejemplo `tw:flex tw:gap-4`.
+
+Los componentes visuales reutilizables utilizan `@apply` en `src/styles`:
+
+- `base.css` y `ui.css`: tipografía, accesibilidad, botones y tarjetas compartidas.
+- `layout.css`: navegación, cabecera y pie de página.
+- `home.css` y `catalog.css`: portada, catálogo y detalle de producto.
+- `auth.css`, `account.css` y `commerce.css`: acceso, cuenta, carrito y checkout.
+- `admin.css` y `pagination.css`: administración y paginación pública.
+
+Las capas `base`, `components` y `utilities` permiten que una utilidad del componente tenga prioridad sobre los estilos compartidos. Se conserva CSS específico para imágenes de fondo, animaciones y pseudoelementos. Preflight no está habilitado; los valores globales se definen en la capa base. Los colores de producto que llegan de la API permanecen como estilos dinámicos.
+
 ## Pruebas y compilación
 
 ```sh

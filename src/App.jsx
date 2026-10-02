@@ -27,8 +27,6 @@ import { CheckoutSuccessPage } from "./pages/Checkout/CheckoutSuccessPage";
 import { ProductDetailPage } from "./pages/ProductDetail/ProductDetailPage";
 import { AdminCategoriesPage } from "./pages/Admin/AdminCategoriesPage";
 import { AdminOrderDetailPage } from "./pages/Admin/AdminOrderDetailPage";
-import "./App.css";
-import "./admin.css";
 
 function PlaceholderPage({ title, description }) {
   return (
