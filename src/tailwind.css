@@ -1,0 +1,4 @@
+/* Keep existing global styles while introducing prefixed utilities. */
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" layer(utilities) prefix(tw);
